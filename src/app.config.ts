@@ -9,7 +9,9 @@ export const APP = {
   LIMIT: 16,
   PORT: 3000,
   ROOT_PATH: __dirname,
+  NAME: 'BpServer'
 };
+
 
 export const MONGODB = {
   uri: `mongodb://127.0.0.1:${argv.dbport || '27017'}/bg`,
