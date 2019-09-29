@@ -26,6 +26,9 @@ export class AuthBase extends Typegoose {
 
     @IsString({ message: '账号类型' })
     accountType: AccountType;
+    
+    @IsString({ message: '第三方登录类型' })
+    type: UserType;
 
     public constructor(id: string){
         super();
@@ -56,8 +59,6 @@ export class AuthLocal extends AuthBase {
 
 // 第三方登录账号
 export class AuthThird extends AuthBase {
-    @IsString({ message: '第三方登录类型' })
-    type: UserType;
 
     @IsString({ message: '第三方id' })
     openId: string;
@@ -68,10 +69,6 @@ export class Auth extends AuthBase {
 
     @IsString({ message: 'token' })
     token: String;
-
-    @IsString({ message: '第三方登录类型' })
-    type: UserType;
-
 
     @IsNumber()
     @Min(3600 * 6)
