@@ -5,7 +5,6 @@
  * @author Surmon <https://github.com/surmon-china>
  */
 
-import * as lodash from 'lodash';
 import * as APP_CONFIG from '@app/app.config';
 import { mongoose } from '@app/transforms/mongoose.transform';
 import { DB_CONNECTION_TOKEN } from '@app/constants/system.constant';
@@ -26,7 +25,11 @@ export const databaseProvider = {
         autoReconnect: true,
         useUnifiedTopology: true,
         reconnectInterval: RECONNET_INTERVAL,
-      }, error => {});
+      }, error => {
+        if (error) {
+          console.error('monogdb error ==> ' + error);
+        }
+      });
     }
 
     mongoose.connection.on('connecting', () => {
