@@ -86,9 +86,8 @@ export class Auth extends TimeStamps {
     @prop()
     token: String;
 
-    @IsNumber()
     @prop({ default: APP_CONFIG.AUTH.expiresIn })
-    expireDate: Number;
+    expiresIn: number;
 }
 
 export const AuthProvider = [

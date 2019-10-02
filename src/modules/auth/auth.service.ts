@@ -1,5 +1,5 @@
 import { Injectable, BadRequestException, Inject, Req, HttpException } from '@nestjs/common';
-import { AuthLocal, Auth, AuthThird } from './auth.model';
+import { AuthLocal, Auth, AuthThird, UserType } from './auth.model';
 import { InjectModel } from '@app/transforms/model.transform';
 import { ModelType } from '@typegoose/typegoose/lib/types';
 
@@ -31,7 +31,8 @@ interface WechatRes {
     session_key: string,
     unionid: string,
     errcode: number,
-    errmsg: string
+    errmsg: string,
+    expires_in: number,
 }
 
 @Injectable()
@@ -47,19 +48,25 @@ export class AuthService {
         return await this.authModel.findOne({ token }).exec();
     }
 
-    async newToken(id: string): Promise<string> {
+    async newToken(id: string, expiresIn?: number): Promise<string> {
         let token = shortid.generate();
 
+        let time: any = APP_CONFIG.AUTH.expiresIn;
+        if (expiresIn) {
+            time = expiresIn;
+        }
 
         let auth = await this.authModel.findOne({ userId: id }).exec();
         if (auth) {
             auth.token = token;
+            auth.expiresIn = time;
             await auth.save();
         } else {
             let authToken = new Auth();
 
             authToken.token = token;
             authToken.userId = id;
+            authToken.expiresIn = time;
 
             await new this.authModel(authToken).save();
         }
@@ -95,8 +102,8 @@ export class AuthService {
                         grant_type: 'authorization_code'
                     }
                 });
-            console.log(' res.data = ' + res.data);
-            if (res.data.errcode == 0) {
+            console.log(' res.data = ' + JSON.stringify(res.data) + ' code = ' + code);
+            if (!res.data.errcode || res.data.errcode === 0) {
                 let auth = await this.authThirdModel.findOne({ openid: res.data.openid }).exec();
                 if (auth) {
                     auth.session_key = res.data.session_key;
@@ -110,6 +117,7 @@ export class AuthService {
                     let authLocal = new AuthLocal();
                     authLocal.userName = `Wechat_` + shortid.generate();
                     authLocal.password = default_password;
+                    authLocal.type = UserType.Wechat;
                     let model1 = await new this.authLocalModel(authLocal).save();
                     // userId 对应本地账号id
                     third.userId = model1._id;
@@ -117,13 +125,12 @@ export class AuthService {
                     auth = await new this.authThirdModel(third).save();
                 }
 
-                return await this.newToken(auth.userId);
+                return await this.newToken(auth.userId, res.data.expires_in);
             } else {
                 throw new Error(res.data.errmsg);
             }
 
         } catch (err) {
-            console.log(err);
             throw new HttpException(err, 400);
         }
     }
