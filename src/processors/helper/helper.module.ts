@@ -12,8 +12,8 @@ const services = [QiniuService];
 
 @Global()
 @Module({
-  imports: [HttpModule],
-  providers: services,
-  exports: services,
+    imports: [HttpModule],
+    providers: services,
+    exports: services,
 })
 export class HelperModule {}

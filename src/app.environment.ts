@@ -10,8 +10,8 @@ export const isProdMode = Object.is(environment, 'production');
 export const isTestMode = Object.is(environment, 'test');
 
 export default {
-  isDevMode,
-  isProdMode,
-  isTestMode,
-  environment,
+    isDevMode,
+    isProdMode,
+    isTestMode,
+    environment,
 };

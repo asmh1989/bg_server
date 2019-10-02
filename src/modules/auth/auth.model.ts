@@ -4,27 +4,34 @@
  */
 
 import { prop } from '@typegoose/typegoose';
-import { IsString, IsDefined, IsNotEmpty, IsEmail, IsNumber, Min, Length, MinLength } from 'class-validator';
+import {
+    IsString,
+    IsDefined,
+    IsNotEmpty,
+    IsEmail,
+    IsNumber,
+    Min,
+    Length,
+    MinLength,
+} from 'class-validator';
 import { TimeStamps } from '@typegoose/typegoose/lib/defaultClasses';
 import { getProviderByClass } from '@app/transforms/model.transform';
 import * as APP_CONFIG from '@app/app.config';
 
 export enum UserType {
     Local = '本地',
-    Wechat = '微信'
+    Wechat = '微信',
 }
 
 export enum AccountType {
     general = '普通账号',
-    admin = '管理员'
+    admin = '管理员',
 }
-
 
 // 本地账号
 export class AuthLocal extends TimeStamps {
-
-    @IsString({ message: '用户名'})
-    @MinLength(6, {message: '用户名长度必须大于6个字符'})
+    @IsString({ message: '用户名' })
+    @MinLength(6, { message: '用户名长度必须大于6个字符' })
     @prop()
     userName: string;
 
@@ -49,12 +56,10 @@ export class AuthLocal extends TimeStamps {
     type: UserType;
 }
 
-
 // 第三方登录账号
 export class AuthThird extends TimeStamps {
-
     @prop({ unique: true })
-    userId: string
+    userId: string;
 
     @IsString({ message: '第三方id' })
     @prop({ required: true })
@@ -67,27 +72,24 @@ export class AuthThird extends TimeStamps {
     @IsString({ message: '第三方登录类型' })
     @prop({ enum: UserType })
     type: UserType;
-
 }
 
 // 登录 token
 export class Auth extends TimeStamps {
-
     @prop({ required: true })
-    userId: string
+    userId: string;
 
     @IsString({ message: 'token' })
     @prop()
     token: String;
 
     @IsNumber()
-    @prop({default: APP_CONFIG.AUTH.expiresIn})
-    expireDate: Number
+    @prop({ default: APP_CONFIG.AUTH.expiresIn })
+    expireDate: Number;
 }
-
 
 export const AuthProvider = [
     getProviderByClass(AuthLocal),
     getProviderByClass(Auth),
-    getProviderByClass(AuthThird)
+    getProviderByClass(AuthThird),
 ];

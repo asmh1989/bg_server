@@ -19,35 +19,35 @@ process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0';
 const { log, warn, info } = console;
 const color = (c: string) => (isDevMode ? c : '');
 Object.assign(global.console, {
-  log: (...args: any) => log('[log]', ...args),
-  warn: (...args: any) =>
-    warn(color('\x1b[33m%s\x1b[0m'), '[warn]', '[bp]', ...args),
-  info: (...args: any) =>
-    info(color('\x1b[34m%s\x1b[0m'), '[info]', '[bp]', ...args),
-  error: (...args: any) =>
-    info(color('\x1b[31m%s\x1b[0m'), '[error]', '[bp]', ...args),
+    log: (...args: any) => log('[log]', ...args),
+    warn: (...args: any) =>
+        warn(color('\x1b[33m%s\x1b[0m'), '[warn]', '[bp]', ...args),
+    info: (...args: any) =>
+        info(color('\x1b[34m%s\x1b[0m'), '[info]', '[bp]', ...args),
+    error: (...args: any) =>
+        info(color('\x1b[31m%s\x1b[0m'), '[error]', '[bp]', ...args),
 });
 
 async function bootstrap() {
-  const app = await NestFactory.create(
-    AppModule,
-    isProdMode ? { logger: false } : null,
-  );
-  app.use(helmet());
-  app.use(compression());
-  app.use(bodyParser.json({ limit: '1mb' }));
-  app.use(bodyParser.urlencoded({ extended: true }));
-  app.use(rateLimit({ max: 1000, windowMs: 15 * 60 * 1000 }));
-  app.useGlobalFilters(new HttpExceptionFilter());
-  app.useGlobalPipes(new ValidationPipe());
-  app.useGlobalInterceptors(
-    new TransformInterceptor(new Reflector()),
-    new ErrorInterceptor(new Reflector()),
-    new LoggingInterceptor(),
-  );
-  return await app.listen(APP_CONFIG.APP.PORT);
+    const app = await NestFactory.create(
+        AppModule,
+        isProdMode ? { logger: false } : null,
+    );
+    app.use(helmet());
+    app.use(compression());
+    app.use(bodyParser.json({ limit: '1mb' }));
+    app.use(bodyParser.urlencoded({ extended: true }));
+    app.use(rateLimit({ max: 1000, windowMs: 15 * 60 * 1000 }));
+    app.useGlobalFilters(new HttpExceptionFilter());
+    app.useGlobalPipes(new ValidationPipe());
+    app.useGlobalInterceptors(
+        new TransformInterceptor(new Reflector()),
+        new ErrorInterceptor(new Reflector()),
+        new LoggingInterceptor(),
+    );
+    return await app.listen(APP_CONFIG.APP.PORT);
 }
 
 bootstrap().then(_ => {
-  console.info(`Bp Run！port at ${APP_CONFIG.APP.PORT}, env: ${environment}`);
+    console.info(`Bp Run！port at ${APP_CONFIG.APP.PORT}, env: ${environment}`);
 });

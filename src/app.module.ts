@@ -9,12 +9,8 @@ import { HelperModule } from '@app/processors/helper/helper.module';
 import { AuthModule } from './modules/auth/auth.module';
 
 @Module({
-  imports: [
-    HelperModule,
-    DatabaseModule,
-    AuthModule,
-  ],
-  controllers: [AppController],
-  providers: [AppService],
+    imports: [HelperModule, DatabaseModule, AuthModule],
+    controllers: [AppController],
+    providers: [AppService],
 })
 export class AppModule {}

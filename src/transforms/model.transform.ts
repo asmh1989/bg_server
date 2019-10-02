@@ -8,25 +8,29 @@
 
 import { Connection, Model } from 'mongoose';
 import { Provider, Inject } from '@nestjs/common';
-import { DB_CONNECTION_TOKEN, DB_MODEL_TOKEN_SUFFIX } from '@app/constants/system.constant';
+import {
+    DB_CONNECTION_TOKEN,
+    DB_MODEL_TOKEN_SUFFIX,
+} from '@app/constants/system.constant';
 import { getModelForClass } from '@typegoose/typegoose';
 import { AnyParamConstructor } from '@typegoose/typegoose/lib/types';
 
-
 export function getModelToken(modelName: string): string {
-  return modelName + DB_MODEL_TOKEN_SUFFIX;
+    return modelName + DB_MODEL_TOKEN_SUFFIX;
 }
 
 // 根据 Model 获取 Provider
-export function getProviderByClass<T, U extends AnyParamConstructor<T>>(cls: U): Provider {
-  return {
-    provide: getModelToken(cls.name),
-    useFactory: (connection: Connection) => getModelForClass(cls),
-    inject: [DB_CONNECTION_TOKEN],
-  };
+export function getProviderByClass<T, U extends AnyParamConstructor<T>>(
+    cls: U,
+): Provider {
+    return {
+        provide: getModelToken(cls.name),
+        useFactory: (connection: Connection) => getModelForClass(cls),
+        inject: [DB_CONNECTION_TOKEN],
+    };
 }
 
 // 注入器
 export function InjectModel<T, U extends AnyParamConstructor<T>>(model: U) {
-  return Inject(getModelToken(model.name));
+    return Inject(getModelToken(model.name));
 }

@@ -5,12 +5,12 @@
  */
 
 export function getMessageFromNormalError(error: any): any {
-    return error && error.message || error;
-  }
-  
-  export function getMessageFromAxiosError(error: any): any {
-    return error
-      && error.response
-      && error.response.data
-      || getMessageFromNormalError(error);
-  }
+    return (error && error.message) || error;
+}
+
+export function getMessageFromAxiosError(error: any): any {
+    return (
+        (error && error.response && error.response.data) ||
+        getMessageFromNormalError(error)
+    );
+}

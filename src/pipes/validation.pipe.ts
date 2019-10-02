@@ -14,23 +14,23 @@ import { ValidationError } from '@app/errors/validation.error';
  */
 @Injectable()
 export class ValidationPipe implements PipeTransform<any> {
-  async transform(value: any, { metatype }: ArgumentMetadata) {
-    if (!metatype || !this.toValidate(metatype)) {
-      return value;
+    async transform(value: any, { metatype }: ArgumentMetadata) {
+        if (!metatype || !this.toValidate(metatype)) {
+            return value;
+        }
+        const object = plainToClass(metatype, value);
+        const errors = await validate(object);
+        if (errors.length > 0) {
+            const errorMessage = errors
+                .map(error => Object.values(error.constraints).join(';'))
+                .join(';');
+            throw new ValidationError(errorMessage);
+        }
+        return value;
     }
-    const object = plainToClass(metatype, value);
-    const errors = await validate(object);
-    if (errors.length > 0) {
-      const errorMessage = errors
-        .map(error => Object.values(error.constraints).join(';'))
-        .join(';');
-      throw new ValidationError(errorMessage);
-    }
-    return value;
-  }
 
-  private toValidate(metatype: any): boolean {
-    const types = [String, Boolean, Number, Array, Object];
-    return !types.find(type => metatype === type);
-  }
+    private toValidate(metatype: any): boolean {
+        const types = [String, Boolean, Number, Array, Object];
+        return !types.find(type => metatype === type);
+    }
 }
