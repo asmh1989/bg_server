@@ -13,7 +13,7 @@ import { TExceptionOption } from '@app/interfaces/http.interface';
  * @example new CustomError({ message: '错误信息', error: new Error(xxx) })
  */
 export class CustomError extends HttpException {
-    constructor(options: TExceptionOption, statusCode?: HttpStatus) {
-        super(options, statusCode || HttpStatus.INTERNAL_SERVER_ERROR);
-    }
+  constructor(options: TExceptionOption, statusCode?: HttpStatus) {
+    super(options, statusCode || HttpStatus.INTERNAL_SERVER_ERROR);
+  }
 }

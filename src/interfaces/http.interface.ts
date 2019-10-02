@@ -5,45 +5,45 @@
 
 // 响应状态
 export enum EHttpStatus {
-    Error = 1,
-    Success = 0,
+  Error = 1,
+  Success = 0,
 }
 
 export type TMessage = string;
 export type TExceptionOption =
-    | TMessage
-    | {
-        message: TMessage;
-        error?: any;
+  | TMessage
+  | {
+      message: TMessage;
+      error?: any;
     };
 
 // 翻页数据
 export interface IHttpResultPaginate<T> {
-    data: T;
-    params: any;
-    pagination: {
-        total: number;
-        current_page: number;
-        total_page: number;
-        per_page: number;
-    };
+  data: T;
+  params: any;
+  pagination: {
+    total: number;
+    current_page: number;
+    total_page: number;
+    per_page: number;
+  };
 }
 
 // HTTP 状态返回
 export interface IHttpResponseBase {
-    status: EHttpStatus;
-    message: TMessage;
+  status: EHttpStatus;
+  message: TMessage;
 }
 
 // HTTP error
 export type THttpErrorResponse = IHttpResponseBase & {
-    error: any;
-    debug?: string;
+  error: any;
+  debug?: string;
 };
 
 // HTTP success 返回
 export type THttpSuccessResponse<T> = IHttpResponseBase & {
-    result: T | IHttpResultPaginate<T>;
+  result: T | IHttpResultPaginate<T>;
 };
 
 // HTTP Response

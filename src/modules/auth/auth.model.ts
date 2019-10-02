@@ -5,93 +5,93 @@
 
 import { prop } from '@typegoose/typegoose';
 import {
-    IsString,
-    IsDefined,
-    IsNotEmpty,
-    IsEmail,
-    IsNumber,
-    Min,
-    Length,
-    MinLength,
+  IsString,
+  IsDefined,
+  IsNotEmpty,
+  IsEmail,
+  IsNumber,
+  Min,
+  Length,
+  MinLength,
 } from 'class-validator';
 import { TimeStamps } from '@typegoose/typegoose/lib/defaultClasses';
 import { getProviderByClass } from '@app/transforms/model.transform';
 import * as APP_CONFIG from '@app/app.config';
 
 export enum UserType {
-    Local = '本地',
-    Wechat = '微信',
+  Local = '本地',
+  Wechat = '微信',
 }
 
 export enum AccountType {
-    general = '普通账号',
-    admin = '管理员',
+  general = '普通账号',
+  admin = '管理员',
 }
 
 // 本地账号
 export class AuthLocal extends TimeStamps {
-    @IsString({ message: '用户名' })
-    @MinLength(6, { message: '用户名长度必须大于6个字符' })
-    @prop()
-    userName: string;
+  @IsString({ message: '用户名' })
+  @MinLength(6, { message: '用户名长度必须大于6个字符' })
+  @prop()
+  userName: string;
 
-    @IsString({ message: '手机号码' })
-    @prop()
-    phone?: string;
+  @IsString({ message: '手机号码' })
+  @prop()
+  phone?: string;
 
-    @IsEmail()
-    @prop()
-    email?: string;
+  @IsEmail()
+  @prop()
+  email?: string;
 
-    @IsString()
-    @prop()
-    password: string;
+  @IsString()
+  @prop()
+  password: string;
 
-    passwordNew: string;
+  passwordNew: string;
 
-    @prop({ default: AccountType.general, enum: AccountType })
-    accountType?: AccountType;
+  @prop({ default: AccountType.general, enum: AccountType })
+  accountType?: AccountType;
 
-    @prop({ default: UserType.Local })
-    type: UserType;
+  @prop({ default: UserType.Local })
+  type: UserType;
 }
 
 // 第三方登录账号
 export class AuthThird extends TimeStamps {
-    @prop({ unique: true })
-    userId: string;
+  @prop({ unique: true })
+  userId: string;
 
-    @IsString({ message: '第三方id' })
-    @prop({ required: true })
-    openId: string;
+  @IsString({ message: '第三方id' })
+  @prop({ required: true })
+  openId: string;
 
-    @prop({ required: true })
-    session_key: string;
+  @prop({ required: true })
+  session_key: string;
 
-    @IsString({ message: '账号类型' })
-    @prop({ default: AccountType.general, enum: AccountType })
-    accountType: AccountType;
+  @IsString({ message: '账号类型' })
+  @prop({ default: AccountType.general, enum: AccountType })
+  accountType: AccountType;
 
-    @IsString({ message: '第三方登录类型' })
-    @prop({ enum: UserType })
-    type: UserType;
+  @IsString({ message: '第三方登录类型' })
+  @prop({ enum: UserType })
+  type: UserType;
 }
 
 // 登录 token
 export class Auth extends TimeStamps {
-    @prop({ required: true })
-    userId: string;
+  @prop({ required: true })
+  userId: string;
 
-    @IsString({ message: 'token' })
-    @prop()
-    token: String;
+  @IsString({ message: 'token' })
+  @prop()
+  token: String;
 
-    @prop({ default: APP_CONFIG.AUTH.expiresIn })
-    expiresIn: number;
+  @prop({ default: APP_CONFIG.AUTH.expiresIn })
+  expiresIn: number;
 }
 
 export const AuthProvider = [
-    getProviderByClass(AuthLocal),
-    getProviderByClass(Auth),
-    getProviderByClass(AuthThird),
+  getProviderByClass(AuthLocal),
+  getProviderByClass(Auth),
+  getProviderByClass(AuthThird),
 ];

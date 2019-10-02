@@ -15,7 +15,7 @@ import { HttpException, HttpStatus } from '@nestjs/common';
  * @example new ValidationError(new Error())
  */
 export class ValidationError extends HttpException {
-    constructor(error?: any) {
-        super(error || TEXT.VALIDATION_ERROR_DEFAULT, HttpStatus.BAD_REQUEST);
-    }
+  constructor(error?: any) {
+    super(error || TEXT.VALIDATION_ERROR_DEFAULT, HttpStatus.BAD_REQUEST);
+  }
 }

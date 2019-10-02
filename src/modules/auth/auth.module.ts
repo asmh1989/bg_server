@@ -15,4 +15,4 @@ import { DatabaseModule } from '@app/processors/database/database.module';
   controllers: [AuthController],
   exports: [AuthService, PassportModule],
 })
-export class AuthModule { }
+export class AuthModule {}
