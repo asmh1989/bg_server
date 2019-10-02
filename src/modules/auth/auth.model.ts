@@ -65,6 +65,9 @@ export class AuthThird extends TimeStamps {
     @prop({ required: true })
     openId: string;
 
+    @prop({ required: true })
+    session_key: string;
+
     @IsString({ message: '账号类型' })
     @prop({ default: AccountType.general, enum: AccountType })
     accountType: AccountType;

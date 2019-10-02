@@ -5,17 +5,17 @@
 
 // 响应状态
 export enum EHttpStatus {
-    Error = 'error',
-    Success = 'success',
+    Error = 1,
+    Success = 0,
 }
 
 export type TMessage = string;
 export type TExceptionOption =
     | TMessage
     | {
-          message: TMessage;
-          error?: any;
-      };
+        message: TMessage;
+        error?: any;
+    };
 
 // 翻页数据
 export interface IHttpResultPaginate<T> {

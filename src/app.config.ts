@@ -32,3 +32,8 @@ export const AUTH = {
     jwtTokenSecret: argv.auth_key || 'nodepress',
     defaultPassword: argv.auth_default_password || 'root',
 };
+
+export const WECHAT = {
+    Appid: 'wx6f37427ae384cfd4',
+    AppSecret: '8d60969949458060b22a387e6b60ec0f',
+};
