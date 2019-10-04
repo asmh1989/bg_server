@@ -49,7 +49,7 @@ export class AuthService {
     private readonly authThirdModel: ModelType<AuthThird>,
   ) {}
 
-  async validateUser(token: string): Promise<any> {
+  async validateUser(token: string): Promise<Auth> {
     return await this.authModel.findOne({ token }).exec();
   }
 
